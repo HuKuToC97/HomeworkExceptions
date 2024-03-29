@@ -9,8 +9,14 @@ import java.util.regex.Pattern;
 public class UserDataProcessor {
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        System.out.println(
-                "Введите данные: Фамилия Имя Отчество дата_рождения номер_телефона пол (разделенные пробелом):");
+        System.out.println("Введите данные в следующем формате, разделенные пробелом: \n" +
+                "Фамилия Имя Отчество дата_рождения номер_телефона пол\n" +
+                "Пример: Иванов Иван Иванович 01.01.1990 1234567890 m\n" +
+                "Требования к данным:\n" +
+                "- Фамилия, Имя, Отчество - строки без цифр и специальных символов.\n" +
+                "- Дата рождения - в формате dd.mm.yyyy (например, 31.12.1990).\n" +
+                "- Номер телефона - целое число без пробелов и специальных символов.\n" +
+                "- Пол - один символ: 'f' (женский) или 'm' (мужской).");
         String input = scanner.nextLine();
         processInput(input);
     }
@@ -19,7 +25,7 @@ public class UserDataProcessor {
         String[] parts = input.split(" ");
         if (parts.length != 6) {
             System.out.println(
-                    "Вы ввели неверное количество данных. Требуется ввести: Фамилия Имя Отчество дата_рождения номер_телефона пол.");
+                    "Вы ввели неверное количество данных. Требуется ввести данные в следующем формате: Фамилия Имя Отчество дата_рождения номер_телефона пол.");
             return;
         }
 
@@ -40,7 +46,7 @@ public class UserDataProcessor {
         }
 
         if (!data[5].matches("[fm]")) {
-            throw new IllegalArgumentException("Пол должен быть указан как 'f' или 'm'.");
+            throw new IllegalArgumentException("Пол должен быть указан как 'f' для женского или 'm' для мужского.");
         }
 
         writeToFIle(data);
@@ -53,5 +59,4 @@ public class UserDataProcessor {
             writer.newLine();
         }
     }
-
 }
