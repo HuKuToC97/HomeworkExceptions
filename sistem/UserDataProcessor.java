@@ -42,6 +42,10 @@ public class UserDataProcessor {
     }
 
     private static void validateAndProcessData(String[] data) throws IOException {
+        if (!data[0].matches("[а-яА-ЯёЁa-zA-Z-]+") || !data[1].matches("[а-яА-ЯёЁa-zA-Z-]+")
+                || !data[2].matches("[а-яА-ЯёЁa-zA-Z-]+")) {
+            throw new IllegalArgumentException("Фамилия, имя и отчество должны содержать только буквы и дефисы.");
+        }
         if (!Pattern.matches("\\d{2}\\.\\d{2}\\.\\d{4}", data[3])) {
             throw new IllegalArgumentException("Неверный формат даты рождения. Ожидается формат dd.mm.yyyy.");
         }
@@ -57,10 +61,13 @@ public class UserDataProcessor {
         writeToFIle(data);
     }
 
-    private static void writeToFIle(String[] data) throws IOException {
+    private static void writeToFIle(String[] data) {
         String fileName = data[0] + ".txt";
         try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(fileName, true), "UTF-8")) {
             writer.write(String.join(" ", data) + "\n");
+        } catch (IOException e) {
+            System.out.println("Произошла ошибка при записи в файл:");
+            e.printStackTrace();
         }
     }
 }
